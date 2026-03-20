@@ -1,0 +1,93 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { LoginUser } from '../../Services/Actions';
+
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+
+class Login extends React.Component {
+    state = {
+        Email: '',
+        Password: ''
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+
+        this.props.LoginUser({ Email: data.get('email'), Password: data.get('password') });
+    };
+
+    render() {
+        return (
+            <Container component="main" maxWidth="xs">
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+
+                    <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                        />
+
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
+
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign In
+                        </Button>
+                    </Box>
+                </Box>
+            </Container>
+        );
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        IsLoggedIn: state.Auth.IsLoggedIn,
+
+        TryingLoginUser: state.Auth.TryingLoginUser,
+        TryingLoginUserError: state.Auth.TryingLoginUserError
+    }
+}
+
+export default connect(mapStateToProps, { LoginUser } )(Login);
