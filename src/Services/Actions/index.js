@@ -560,7 +560,7 @@ export const InsertEditMatchEvent = ({ MatchEventId, MatchEvents, MatchEventType
   
     var data = { MatchEventId, MatchEvents, MatchEventTypeId, MatchId, TimeOfGame };
   
-    const response = await axiosInstance.post(`${BASE_API}matches/insertEditMatchEvent`, { ...data }, { showSuccessToast: true });
+    const response = await axiosInstance.post(`${BASE_API}matches/insertEditMatchEvent`, { ...data }, { showSuccessToast: false });
   
     if (response.data.Response === 1) {
         dispatch({ type: TRYING_GET_DATA_SUCCESS });
@@ -576,7 +576,7 @@ export const InsertEditMatchRoster = ({ MatchId, MatchRoster }) => async dispatc
   
     var data = { MatchId, MatchRoster };
   
-    const response = await axiosInstance.post(`${BASE_API}matches/insertEditMatchRoster`, { ...data }, { showSuccessToast: true });
+    const response = await axiosInstance.post(`${BASE_API}matches/insertEditMatchRoster`, { ...data }, { showSuccessToast: false });
   
     if (response.data.Response === 1) {
         dispatch({ type: TRYING_GET_DATA_SUCCESS });
