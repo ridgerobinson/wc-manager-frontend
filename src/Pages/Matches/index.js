@@ -89,7 +89,7 @@ const postponedMatchesColumns = [
     { field: 'locationname', headerName: 'Location', flex: 1 }
 ];
 
-const ShowEditPopup_Data_Init = { matchid: 0, eventid: 0, eventname: '', matchdate: dayjs(), opponentid: 0, opponentname: '', homeawayid: 0, homeawayname: '', locationid: 0, locationname: '', matchtypeid: 0, matchtypename: '', matchstatusid: 0, matchstatusname: '', teamscore: '', opponentscore: '', trackstarts: 0, delete_warning: false, last_added_match_id: 0 };
+const ShowEditPopup_Data_Init = { matchid: 0, eventid: 0, eventname: '', gamenotes: '', matchdate: dayjs(), opponentid: 0, opponentname: '', homeawayid: 0, homeawayname: '', locationid: 0, locationname: '', matchtypeid: 0, matchtypename: '', matchstatusid: 0, matchstatusname: '', teamscore: '', opponentscore: '', trackstarts: 0, delete_warning: false, last_added_match_id: 0 };
 const FILTERS_INIT = { Competitions: [], EndDate: dayjs().endOf('month').endOf('week').tz(TIMEZONE).format('YYYY-MM-DD'), Events: [], Seasons: [], StartDate: dayjs().startOf('month').startOf('week').tz(TIMEZONE).format('YYYY-MM-DD'), TeamsOpponents: [], Teams: [] };
 
 class Matches extends React.Component {
@@ -260,6 +260,12 @@ class Matches extends React.Component {
         this.setState({ Filters }, () => this.onLoadAllMatches());
     }
 
+    onChangeGameNotes = event => {
+        var ShowEditPopup_Data = { ...this.state.ShowEditPopup_Data };
+        ShowEditPopup_Data.gamenotes = event.target.value;
+        this.setState({ ShowEditPopup_Data });
+    }
+
     onChangeHomeAway = newValue => {
         var ShowEditPopup_Data = { ...this.state.ShowEditPopup_Data };
 
@@ -345,9 +351,9 @@ class Matches extends React.Component {
     onInsertEditMatch = event => {
         event.preventDefault();
 
-        var { matchid: MatchId, eventid: EventId, matchdate: MatchDate, locationid: LocationId, opponentid: OpponentId, homeawayname: HomeAway, matchtypeid: MatchTypeId, matchstatusid: MatchStatusId, teamscore: TeamScore, opponentscore: OpponentScore, trackstarts: TrackStarts } = this.state.ShowEditPopup_Data;
+        var { matchid: MatchId, eventid: EventId, gamenotes: GameNotes, matchdate: MatchDate, locationid: LocationId, opponentid: OpponentId, homeawayname: HomeAway, matchtypeid: MatchTypeId, matchstatusid: MatchStatusId, teamscore: TeamScore, opponentscore: OpponentScore, trackstarts: TrackStarts } = this.state.ShowEditPopup_Data;
 
-        this.props.InsertEditMatch({ EventId, HomeAway, MatchDate, MatchId, MatchStatusId, MatchTypeId, LocationId, OpponentId, OpponentScore, TeamScore, TrackStarts }).then(({ Match }) => {
+        this.props.InsertEditMatch({ EventId, GameNotes, HomeAway, MatchDate, MatchId, MatchStatusId, MatchTypeId, LocationId, OpponentId, OpponentScore, TeamScore, TrackStarts }).then(({ Match }) => {
             if (this.state.CalendarType === 'Calendar') this.onToggleShowEditPopup({});
             else this.onResetMatch({ last_added_match_id: Match.id });
 
@@ -1181,6 +1187,20 @@ class Matches extends React.Component {
                         <Box sx={{ height: 20 }} />
 
                         {this.renderAutocompleteList_MatchTypes()}
+
+                        <Box sx={{ height: 20 }} />
+
+                        <TextField
+                            margin="dense"
+                            id="gamenotes"
+                            name="gamenotes"
+                            label="Game notes"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            onChange={this.onChangeGameNotes}
+                            value={ShowEditPopup_Data.gamenotes === null ? '' : ShowEditPopup_Data.gamenotes}
+                        />
 
                         <Box sx={{ height: 20 }} />
 

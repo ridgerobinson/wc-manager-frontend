@@ -537,10 +537,10 @@ export const InsertEditLocation = ({ LocationId, LocationName }) => async dispat
     return {};
 }
 
-export const InsertEditMatch = ({ EventId, HomeAway, MatchDate, MatchId, MatchStatusId, MatchTypeId, LocationId, OpponentId, OpponentScore, TeamScore, TrackStarts }) => async dispatch => {
+export const InsertEditMatch = ({ EventId, GameNotes, HomeAway, MatchDate, MatchId, MatchStatusId, MatchTypeId, LocationId, OpponentId, OpponentScore, TeamScore, TrackStarts }) => async dispatch => {
     dispatch({ type: TRYING_GET_DATA });
   
-    var data = { EventId, HomeAway, MatchDate, MatchId, MatchStatusId, MatchTypeId, LocationId, OpponentId, OpponentScore, TeamScore, TrackStarts };
+    var data = { EventId, GameNotes, HomeAway, MatchDate, MatchId, MatchStatusId, MatchTypeId, LocationId, OpponentId, OpponentScore, TeamScore, TrackStarts };
   
     const response = await axiosInstance.post(`${BASE_API}matches/insertEditMatch`, { ...data }, { showSuccessToast: true });
   
